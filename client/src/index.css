@@ -1,0 +1,59 @@
+body {
+    background-color: whitesmoke;
+}
+
+.form-container {
+    width: 30%;
+    margin: 0 auto;
+    margin-top: 5%;
+    background-color: white;
+}
+
+form {
+    padding: 48px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+form input {
+    margin-bottom: 16px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.dashboard {
+    margin: auto 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logout-btn {
+    padding: 10px;
+    color: whitesmoke;
+    background-color: rgb(246, 77, 77);
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+}
