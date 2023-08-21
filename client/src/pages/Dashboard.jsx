@@ -33,7 +33,7 @@ const Dashboard = () => {
         getUser();
     }, [token, navigate]);
 
-    function handleClick() {
+    function handleLogout() {
         localStorage.removeItem('token');
 
         toast.success('Logged out successfully!');
@@ -44,7 +44,7 @@ const Dashboard = () => {
         <div className="dashboard">
             <h1>Welcome {user?.email}!</h1>
 
-            <button className="logout-btn" onClick={handleClick}>
+            <button className="logout-btn" onClick={handleLogout}>
                 Logout
             </button>
         </div>

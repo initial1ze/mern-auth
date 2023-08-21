@@ -15,7 +15,7 @@ const Signup = () => {
         if (token) return navigate('/dashboard');
     }, [token, navigate]);
 
-    async function handleSubmit(e) {
+    async function handleSignup(e) {
         e.preventDefault();
 
         try {
@@ -42,7 +42,7 @@ const Signup = () => {
     }
     return token ? null : (
         <div className="form-container">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSignup}>
                 <label htmlFor="email">Email:</label>
                 <input
                     type="email"

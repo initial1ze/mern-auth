@@ -15,7 +15,7 @@ const Login = () => {
         if (token) return navigate('/dashboard');
     }, [token, navigate]);
 
-    async function handleSubmit(e) {
+    async function handleLogin(e) {
         e.preventDefault();
 
         try {
@@ -28,23 +28,21 @@ const Login = () => {
 
             if (res.data.success) {
                 toast.success(res.data.message);
-
                 localStorage.setItem('token', res.data.user.token);
+                navigate('/dashboard');
             } else {
                 toast.error(res.data.message);
             }
 
             setEmail('');
             setPassword('');
-
-            navigate('/dashboard');
         } catch (error) {
             console.log(error);
         }
     }
     return token ? null : (
         <div className="form-container">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
                 <label htmlFor="email">Email:</label>
                 <input
                     type="email"
