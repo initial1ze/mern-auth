@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import User from '../models/user.model.js';
 
+import User from '../models/user.model.js';
 import { secret, jwtExpiration } from '../constants.js';
+import { validateLogin, validateSignup } from '../utils.js';
 
 
 
@@ -10,28 +11,10 @@ export const signup = async (req, res) => {
     try {
         const { email, password, cnfPassword } = req.body;
 
-        if (!email || !password || !cnfPassword) {
-            return res.json({ success: false, message: "Please fill all the fields." });
-        }
+        const error = await validateSignup(email, password, cnfPassword);
 
-        const validEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/g;
-
-        if (validEmailRegex.test(email) === false) {
-            return res.json({ success: false, message: "Please enter a valid email address." });
-        }
-
-        if (password.length < 8) {
-            return res.json({ success: false, message: "Password must be at least 8 characters long." });
-        }
-
-        if (password !== cnfPassword) {
-            return res.json({ success: false, message: "Password do not match." });
-        }
-
-        const userExists = await User.exists({ email });
-
-        if (userExists) {
-            return res.json({ success: false, message: "User with this email already exists." });
+        if (error.length > 0) {
+            return res.json({ success: false, message: `${error}` })
         }
 
         const hasedPassword = await bcrypt.hash(password, 10);
@@ -53,14 +36,10 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        if (!email || !password) {
-            return res.json({ success: false, message: "Please fill all the fields." });
-        }
+        const error = validateLogin(email, password);
 
-        const validEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/g;
-
-        if (validEmailRegex.test(email) === false) {
-            return res.json({ success: false, message: "Please enter a valid email address." });
+        if (error.length > 0) {
+            return res.json({ success: false, message: `${error}` })
         }
 
         const user = await User.findOne({ email });
@@ -75,7 +54,7 @@ export const login = async (req, res) => {
             return res.json({ success: false, message: "Invalid credentials." });
         }
 
-        const token = jwt.sign({ email: user.email, id: user._id }, secret, { expiresIn: jwtExpiration });
+        const token = jwt.sign({ id: user._id }, secret, { expiresIn: jwtExpiration });
 
         return res.json({
             success: true,
@@ -93,10 +72,6 @@ export const login = async (req, res) => {
 
 export const getUser = async (req, res) => {
     try {
-
-        // const authorizationHeader = req.headers.authorization;
-        // if (!authorizationHeader) return res.json({ success: false, message: "No token, authorization denied." });
-
         const token = req.headers.authorization?.split(' ')[1];
         if (!token) return res.json({ success: false, message: "No token, authorization denied." });
 

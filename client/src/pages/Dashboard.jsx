@@ -19,7 +19,12 @@ const Dashboard = () => {
                     },
                 });
 
-                setUser(res.data.user);
+                if (res.data.success) setUser(res.data.user);
+                else {
+                    toast.error('Something went wrong, please login again.');
+                    localStorage.removeItem('token');
+                    navigate('/login');
+                }
             } catch (error) {
                 console.log(error);
             }
